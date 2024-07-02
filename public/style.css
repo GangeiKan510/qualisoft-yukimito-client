@@ -1,0 +1,242 @@
+body {
+  background-color: #ffffff;
+  background-image: url("https://www.transparenttextures.com/patterns/inspiration-geometry.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+}
+
+.add-pet-form {
+  width: 600px !important;
+}
+
+.black-font {
+  color: #212529 !important;
+}
+
+.border-top {
+  border-top: 1px solid #00bac7 !important;
+}
+
+.button-link {
+  color: #0dcfdc !important;
+  font-family: sans-serif;
+  margin-left: 0.25rem !important;
+}
+
+.button-border-color {
+ border-color: #0dcfdc;
+}
+
+.button-border-color:hover {
+  border-color: #0dcfdc;
+ }
+
+.form-bg-color {
+  background-color: #fff !important;
+} 
+
+.form-input {
+  width: 100% !important;
+}
+
+.form-styles {
+  border-radius: 10px;
+  border: 1px solid #C4C4C4 !important;
+}
+
+.footer {
+  width: 100%;
+  background-color: #0dcfdc;
+} 
+
+.gray-font {
+  color: #9C9FA0 !important;
+}
+
+.input-styling {
+  border-radius: 20px;
+  background-color: #fff !important;
+}
+
+.input-container {
+  padding: 2rem !important;
+}
+
+.input-margin {
+  margin-bottom: 0.5rem !important;
+}
+
+.navbar-container {
+  box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)
+}
+
+.navbar-toggler {
+  color: white !important;
+}
+
+.nav-logo {
+  padding-top: 1rem !important;
+}
+
+.nav-link.active {
+  background-color: #0DCFDB !important;
+}
+
+.non-inline {
+  width: 100%;
+}
+
+.no-margin {
+  margin-top: 0 !important;
+}
+
+.main-container {
+  flex: 1;
+  padding-top: 0.5rem;
+  padding-bottom: 1.5rem;
+  margin-top: 0.5rem;
+}
+.navbar-text-size {
+  font-size: 1.5rem !important;
+  text-transform: none !important;
+}
+
+.no-box-shadow {
+  box-shadow: none !important
+}
+
+.input-white-bg {
+  background-color: white !important;
+  border-radius: 4px;
+}
+
+.css-o5pqw1-MuiPaper-root-MuiCard-root {
+  min-width: 400px !important;
+  border-radius: 15px !important;
+}
+
+.button-color {
+  background-color: #0dcfdc !important;
+  --bs-btn-border-color: #0dcfdc
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 20px !important;
+}
+
+
+.yukimito-font, 
+.css-1kkpk3h-MuiButtonBase-root-MuiButton-root, 
+.css-ag7rrr-MuiTypography-root, 
+.css-5lbw0b-MuiTypography-root {
+  font-family: 'Lilita One' !important;
+}
+
+.dark-b-font {
+  color: #00a1ad !important;
+}
+
+.yuki-border-color {
+  border-color: #F5CF00 !important;
+}
+
+.yuki-font-color {
+  color: #F5CF00 !important;
+}
+
+.yuki-font-color2 {
+  color: #0dcfdc !important;
+}
+
+.yuki-color {
+  background-color: #0dcfdc !important;
+}
+
+.yuki-color2 {
+  background-color: #F5CF00 !important;
+}
+
+.navbar-color {
+  color: #ffffff !important;
+  text-decoration: none;
+  margin: 15px;
+} 
+
+.login-footer {
+  background-color: #0DCFDB !important;
+}
+
+.cursive-font {
+  font-family: 'Pacifico', cursive !important;
+  color: #00a1ad !important;
+}
+
+.css-4t3x6l-MuiPaper-root-MuiDrawer-paper {
+  background-color: #0dcfdc !important;
+  font-family: 'Lilita One' !important; 
+}
+
+.css-10hburv-MuiTypography-root {
+  font-family: 'Lilita One' !important; 
+  font-size: larger !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+.text-white {
+  color: white !important;
+}
+
+.white-background { 
+  background-color: #fff !important;
+}
+
+.list-group {
+  list-style-type: none;
+  padding: 0;
+}
+.list-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.list-group-item .close-btn {
+  cursor: pointer;
+  padding: 5px;
+  background-color: #ccc;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  width: 25px; /* Set width and height to make it a circle */
+  height: 25px; /* Set width and height to make it a circle */
+  display: flex; /* Add this line to center the text inside the circle */
+  align-items: center; /* Add this line to center the text inside the circle */
+  justify-content: center; /* Add this line to center the text inside the circle */
+}
+.list-group-item .close-btn:hover {
+  background-color: #999; /* Change background color on hover */
+}
+
+.border-custom {
+  border-color: #C4C4C4 !important;
+}
+
+
+.admin-nav .nav-link.active {
+  color: white !important;; /* Font color when active */
+  background-color: white; /* Background color when active */
+  font-weight: bold;
+}
+
+.admin-nav .nav-link:not(.active) {
+  color: rgb(102, 102, 102) !important; ; /* Font color when not active */
+
+}
