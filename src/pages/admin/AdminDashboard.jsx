@@ -34,7 +34,7 @@ const AdminDashBoard = () => {
   async function handleBookingRejection(bookingId) {
     try {
       await axios.put(
-        `http://localhost:4269/api/admin/booking/reject/${bookingId}`,
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/admin/booking/reject/${bookingId}`,
         { reasonForRejecting: reason },
         {
           headers: {
@@ -55,7 +55,7 @@ const AdminDashBoard = () => {
 
     try {
       await axios.put(
-        `http://localhost:4269/api/admin/booking/accept/${bookingId}`,
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/admin/booking/accept/${bookingId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ const AdminDashBoard = () => {
   async function handleAcceptVaccine(petId) {
     try {
       await axios.put(
-        `http://localhost:4269/api/pet/approveVaccinationRecord/${petId}`,
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/pet/approveVaccinationRecord/${petId}`,
         null,
         {
           headers: {
@@ -96,7 +96,7 @@ const AdminDashBoard = () => {
       navigate("/AdminLogin");
     }
 
-    fetch(`http://localhost:4269/api/getAllBookings`, {
+    fetch(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getAllBookings`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -105,7 +105,7 @@ const AdminDashBoard = () => {
       .then((fetchedBookings) => setBookings(fetchedBookings))
       .catch((error) => console.log(error));
 
-    fetch(`http://localhost:4269/api/getAllPets`, {
+    fetch(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getAllPets`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -114,7 +114,7 @@ const AdminDashBoard = () => {
       .then((fetchedPets) => setPets(fetchedPets))
       .catch((error) => console.log(error));
 
-    fetch(`http://localhost:4269/api/auth/getAllPetOwners`, {
+    fetch(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/getAllPetOwners`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

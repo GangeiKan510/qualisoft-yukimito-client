@@ -25,7 +25,7 @@ const AdminControlsTabComponent = () => {
 
   const handleAddAdmin = async() => {
     try {
-      const response = await axios.post('http://localhost:4269/api/auth/signup/admin', formData,
+      const response = await axios.post(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/signup/admin`, formData,
       {
         headers: {
           "Content-Type": "application/json",

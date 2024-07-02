@@ -99,7 +99,7 @@ export default function ClientRegister() {
     if (!isValid) {
       alert('Registration failed!');
     } else {
-      axios.post('http://localhost:4269/api/auth/signup/petowner', form)
+      axios.post(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/signup/petowner`, form)
       .then((response) => {
         console.log(response.data);
         // handle success here

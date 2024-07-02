@@ -25,7 +25,7 @@ const inputDetails = [
 async function loginAdmin(credentials) {
   try {
     const response = await axios.post(
-      "http://localhost:4269/api/auth/signin/admin",
+      `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/signin/admin`,
       credentials
     );
     localStorage.setItem("token", response.data.token);

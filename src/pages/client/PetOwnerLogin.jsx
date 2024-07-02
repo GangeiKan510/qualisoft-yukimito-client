@@ -30,10 +30,12 @@ const inputDetails = [
 async function loginUser(credentials) {
   try {
     const response = await axios.post(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/signin/petowner`, credentials);
+    console.log('Login response:', response);
     localStorage.setItem('token', response.data.accessToken);
     return true;
   } catch (error) {
-    console.log(error);
+    console.error('Login error:', error);
+    console.error('Response data:', error.response?.data);
     return false;
   }
 }
@@ -55,15 +57,13 @@ const PetOwnerLogin = () => {
 
   async function handleLogin() {
     const success = await loginUser(input);
-    let test;
-    console.log(success);
+    console.log('Login success:', success);
 
     if (success) {
       navigate('/PetOwnerDashboard');
     } else {
       setIsInvalidLogin(true);
     }
-    return test;
   }
 
   function handleInput(event) {

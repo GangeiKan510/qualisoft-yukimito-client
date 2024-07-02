@@ -36,7 +36,7 @@ const EditPetForm = (props) => {
   const handleSaveChanges = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:4269/api/pet/updatePet/${props.petId}`,
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/pet/updatePet/${props.petId}`,
         petDetails,
         {
           headers: {

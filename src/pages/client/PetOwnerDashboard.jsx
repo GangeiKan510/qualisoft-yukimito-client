@@ -89,7 +89,7 @@ export default function PetOwnerDashboard() {
   
     try {
       const response = await axios.put(
-        `http://localhost:4269/api/pet/uploadPetProfile/${petId}`,
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/pet/uploadPetProfile/${petId}`,
         formData,
         {
           headers: {
@@ -124,7 +124,7 @@ export default function PetOwnerDashboard() {
     console.log([...formData]);
 
     await axios.put(
-      `http://localhost:4269/api/auth/uploadProfilePicture/${ownerId}`,
+      `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/uploadProfilePicture/${ownerId}`,
       formData,
       {
         headers: {
@@ -208,7 +208,7 @@ export default function PetOwnerDashboard() {
 
     try {
       const response = await axios.post(
-        "http://localhost:4269/api/addPet/pet",
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/addPet/pet`,
         formData,
         {
           headers: {
@@ -239,7 +239,7 @@ export default function PetOwnerDashboard() {
       //   setError('Invalid input')
       // }
       const response = await axios.put(
-        `http://localhost:4269/api/auth/editProfile/petowner/${ownerId}`,
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/editProfile/petowner/${ownerId}`,
         petOwnerDetails,
         {
           headers: {
@@ -249,7 +249,7 @@ export default function PetOwnerDashboard() {
       );
 
       if (response.status === 200) {
-        // setUserData(petOwnerDetails);
+        setUserData(petOwnerDetails);
         console.log(response.data.name);
         console.log(userSelected.name);
         console.log("Successfully updated!");
@@ -273,7 +273,7 @@ export default function PetOwnerDashboard() {
       //   setError('Invalid input')
       // }
       const response = await axios.delete(
-        `http://127.0.0.1:4269/api/deletePet/${ownerId}/${petId}`,
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/deletePet/${ownerId}/${petId}`,
         petOwnerDetails,
         {
           headers: {
@@ -300,7 +300,7 @@ export default function PetOwnerDashboard() {
       navigate("/");
     }
 
-    fetch(`http://localhost:4269/api/getBooking/${userSelected.id}`, {
+    fetch(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getBooking/${userSelected.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -309,7 +309,7 @@ export default function PetOwnerDashboard() {
       .then((fetchedBookings) => setBookings(fetchedBookings))
       .catch((error) => console.log(error));
 
-    fetch(`http://localhost:4269/api/getPets/pet/${userSelected.id}`, {
+    fetch(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getPets/pet/${userSelected.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -319,7 +319,7 @@ export default function PetOwnerDashboard() {
       .catch((error) => console.log(error));
 
     axios
-      .get(`http://localhost:4269/api/auth/getPetOwner/${userSelected.id}`, {
+      .get(`${process.env.REACT_APP_PUBLIC_API_SERVER}:4269/api/auth/getPetOwner/${userSelected.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -354,6 +354,8 @@ export default function PetOwnerDashboard() {
 
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const specificBookingId = selectedBookingId;
+  
+  console.log(userSelected);
 
   return (
     <>

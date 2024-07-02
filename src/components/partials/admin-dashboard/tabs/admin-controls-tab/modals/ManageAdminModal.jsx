@@ -13,7 +13,7 @@ const ManageAdminModal = (props) => {
   const handleSaveChanges = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:4269/api/admin/adminAccountManagement/${props.adminId}`,
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/admin/adminAccountManagement/${props.adminId}`,
         { role: selectedOption },
         {
           headers: {

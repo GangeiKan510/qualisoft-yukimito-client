@@ -138,11 +138,11 @@ const PetOwnerBookingHomeCare = () => {
       let response;
 
       if (bookingDetails.service === "Home Care") {
-        response = await axios.post('http://localhost:4269/api/createHomeCareBooking', bookingDetailsWithInstructions);
+        response = await axios.post(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/createHomeCareBooking`, bookingDetailsWithInstructions);
       } else if (bookingDetails.service === "Day Care") {
-        response = await axios.post('http://localhost:4269/api/createDayCareBooking', bookingDetailsWithInstructions);
+        response = await axios.post(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/createDayCareBooking`, bookingDetailsWithInstructions);
       } else if (bookingDetails.service === "Errands Care") {
-        response = await axios.post('http://localhost:4269/api/createErrandsCareBooking', bookingDetailsWithInstructions, {
+        response = await axios.post(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/createErrandsCareBooking`, bookingDetailsWithInstructions, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -165,7 +165,7 @@ const PetOwnerBookingHomeCare = () => {
       navigate("/");
     }
 
-    fetch(`http://localhost:4269/api/getPets/pet/${userSelected.id}`, {
+    fetch(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getPets/pet/${userSelected.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
