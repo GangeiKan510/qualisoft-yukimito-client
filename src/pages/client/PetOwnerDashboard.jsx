@@ -250,8 +250,6 @@ export default function PetOwnerDashboard() {
 
       if (response.status === 200) {
         setUserData(petOwnerDetails);
-        console.log(response.data.name);
-        console.log(userSelected.name);
         console.log("Successfully updated!");
         window.location.reload();
       } else {
@@ -264,14 +262,8 @@ export default function PetOwnerDashboard() {
 
   const handleDeletePet = async (petId) => {
     const ownerId = userSelected.id;
-    console.log(petId);
 
     try {
-      // if (textField is valid) {
-      //   const response
-      // } else {
-      //   setError('Invalid input')
-      // }
       const response = await axios.delete(
         `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/deletePet/${ownerId}/${petId}`,
         petOwnerDetails,
@@ -319,7 +311,7 @@ export default function PetOwnerDashboard() {
       .catch((error) => console.log(error));
 
     axios
-      .get(`${process.env.REACT_APP_PUBLIC_API_SERVER}:4269/api/auth/getPetOwner/${userSelected.id}`, {
+      .get(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/getPetOwner/${userSelected.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -354,8 +346,6 @@ export default function PetOwnerDashboard() {
 
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const specificBookingId = selectedBookingId;
-  
-  console.log(userSelected);
 
   return (
     <>
