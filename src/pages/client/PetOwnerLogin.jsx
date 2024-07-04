@@ -83,7 +83,7 @@ const PetOwnerLogin = () => {
     }
   };
 
-  const navItems = ["About", "Gallery", "Requirements", "Rates & Services", "Team", "Reviews"];
+  const navItems = ["About", "Gallery", "Requirements", "Rates & Services", "Team"];
   return (
     <>
       <hr id="Log In"/>

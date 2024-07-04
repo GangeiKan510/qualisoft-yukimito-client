@@ -178,12 +178,6 @@ export default function ClientRegister() {
         </div>
 
       </div>
-
-      <div class="container fixed-bottom">
-      <footer class="py-3 my-4">
-        <p class="text-center text-muted">© {new Date().getFullYear()} QUALISOFT Services.</p>
-      </footer>
-    </div>
     </>
   );
 };
