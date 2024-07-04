@@ -45,7 +45,7 @@ export function DeleteBooking(props) {
   
       try {
         const response = await axios.delete(
-          `http://localhost:4269/api/cancelBooking/${ownerId}/${bookingId}`,
+          `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/cancelBooking/${ownerId}/${bookingId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -30,7 +30,6 @@ const inputDetails = [
 async function loginUser(credentials) {
   try {
     const response = await axios.post(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/signin/petowner`, credentials);
-    console.log('Login response:', response);
     localStorage.setItem('token', response.data.accessToken);
     return true;
   } catch (error) {
@@ -57,7 +56,6 @@ const PetOwnerLogin = () => {
 
   async function handleLogin() {
     const success = await loginUser(input);
-    console.log('Login success:', success);
 
     if (success) {
       navigate('/PetOwnerDashboard');

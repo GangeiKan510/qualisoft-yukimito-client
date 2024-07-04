@@ -44,7 +44,7 @@ const AdminControlsTabComponent = () => {
 
   useEffect(() => {
     axios
-    .get(`http://localhost:4269/api/admin/getAllAdmin`, {
+    .get(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/admin/getAllAdmin`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

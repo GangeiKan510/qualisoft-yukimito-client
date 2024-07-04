@@ -1,6 +1,5 @@
 import Footer from "../partials/Footer";
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
 import AddPetForm from "../../components/partials/AddPetForm";
 import EditPetProfileForm from "../../components/partials/EditPetProfileForm";
 import { useState, useEffect } from "react";
@@ -11,11 +10,13 @@ import NavBarMain from "../partials/NavBarMain";
 import Logout from "../partials/Logout";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
-import coverImage from "../../assets/images/cover.svg"
+import coverImage from "../../assets/images/cover.svg";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { DeleteBooking } from "../../components/partials/DeleteBooking";
 import EditPetForm from "../partials/EditPetForm";
 import VaccinePhotoModal from "../partials/VaccinePhotoModal";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
 
 export default function PetOwnerDashboard() {
   const navigate = useNavigate();
@@ -53,8 +54,7 @@ export default function PetOwnerDashboard() {
   const [usernameError, setUsernameError] = useState("");
   const [contactNumberError, setContactNumberError] = useState("");
   const [emailError, setEmailError] = useState("");
-  const [ uploadedPetVaccine, setUploadedPetVaccine] = useState(false);
-  // const [ addressError, setAddressError ] = useState('');
+  const [uploadedPetVaccine, setUploadedPetVaccine] = useState(false);
 
   const handleChange = (event) => {
     setPet({
@@ -62,12 +62,15 @@ export default function PetOwnerDashboard() {
       [event.target.name]: event.target.value,
     });
   };
+
   const handleDateChange = (date) => {
     setPet({ ...pet, birthday: date.format("MM-DD-YYYY") });
   };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleCancel = () => {
     setOpen(false);
   };
@@ -120,8 +123,6 @@ export default function PetOwnerDashboard() {
 
     formData.append('_method', 'PUT');
     formData.append("filename", file);
-
-    console.log([...formData]);
 
     await axios.put(
       `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/uploadProfilePicture/${ownerId}`,
@@ -178,7 +179,6 @@ export default function PetOwnerDashboard() {
       setEmailError("");
     }
   };
-  
 
   const handleEditOpen = () => {
     setOpenEdit(true);
@@ -194,17 +194,14 @@ export default function PetOwnerDashboard() {
     let formData = new FormData();
 
     for (let detail in pet) {
-      console.log(detail, ":", pet[detail])
       if (detail === 'vaccinePhoto') {
-        formData.append('filename', pet[detail])
+        formData.append('filename', pet[detail]);
       } else {
-        formData.append(detail, pet[detail])
+        formData.append(detail, pet[detail]);
       }
     }
 
     formData.append('_method', 'POST'); 
-
-    console.log([...formData]);
 
     try {
       const response = await axios.post(
@@ -229,15 +226,8 @@ export default function PetOwnerDashboard() {
 
   const handleUpdate = async () => {
     const ownerId = userSelected.id;
-    // console.log("debug")
-    // console.log(petOwnerDetails)
 
     try {
-      // if (textField is valid) {
-      //   const response
-      // } else {
-      //   setError('Invalid input')
-      // }
       const response = await axios.put(
         `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/editProfile/petowner/${ownerId}`,
         petOwnerDetails,
@@ -365,18 +355,41 @@ export default function PetOwnerDashboard() {
             />
 
             <div className="mt-1" style={{ maxHeight: "50px" }}>
-              <div className="col mt-1">
+              <div className="col mt-1" style={{ position: "relative" }}>
                 <label htmlFor="profile-picture-upload">
-                  <Avatar
-                    alt="Profile Picture"
-                    src={profilePicture || petOwnerDetails.profilePhoto}
-                    sx={{
-                      transform: "translate(10%, -80%)",
+                  <div
+                    style={{
                       width: 150,
                       height: 150,
+                      borderRadius: "50%",
+                      border: "5px solid white",
+                      overflow: "hidden",
+                      position: "relative",
+                      transform: "translate(10%, -80%)",
+                      cursor: "pointer",
                     }}
-                    className="border border-5 border-white"
-                  />
+                  >
+                    <img
+                      src={profilePicture || petOwnerDetails.profilePhoto}
+                      alt="Profile Picture"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    <IconButton
+                      color="primary"
+                      component="span"
+                      style={{
+                        opacity: .5,
+                        position: "absolute",
+                        bottom: 10,
+                        right: 10,
+                        backgroundColor: "white",
+                        borderRadius: "50%",
+                        zIndex: 1,
+                      }}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </div>
                 </label>
                 <input
                   id="profile-picture-upload"
@@ -388,13 +401,13 @@ export default function PetOwnerDashboard() {
               </div>
             </div>
             <div className="col align-middle">
-              <div class="d-flex justify-content-between align-content-center">
+              <div className="d-flex justify-content-between align-content-center">
                 <div className="col">
                   <h1>
                     {userData.ownerName}{" "}
                   </h1>
                 </div>
-                <div class="col d-flex flex-row-reverse lg">
+                <div className="col d-flex flex-row-reverse lg">
                   <div>
                     <EditPetProfileForm
                       ownerName={petOwnerDetails.ownerName}
@@ -434,12 +447,12 @@ export default function PetOwnerDashboard() {
 
             <div className="py-3">
               <div className="card shadow">
-                <div class="card-header">
+                <div className="card-header">
                   <b>Pet Owner Details</b>
                 </div>
-                <div class="card-body">
-                  <h5 class="card-title">Address: {userData.address ? userData.address : "No address"}</h5>
-                  <p class="card-text text-secondary">
+                <div className="card-body">
+                  <h5 className="card-title">Address: {userData.address ? userData.address : "No address"}</h5>
+                  <p className="card-text text-secondary">
                     Contact Number: {userData.contactNumber}
                     <br />
                     Email: {userData.email}
@@ -469,22 +482,22 @@ export default function PetOwnerDashboard() {
                     data-target="#exampleModalCenter"
                   >
                     <div
-                      class="modal fade"
+                      className="modal fade"
                       id="exampleModalCenter"
-                      tabindex="-1"
+                      tabIndex="-1"
                       role="dialog"
                       aria-labelledby="exampleModalCenterTitle"
                       aria-hidden="true"
                     >
                       <div
-                        class="modal-dialog modal-dialog-centered"
+                        className="modal-dialog modal-dialog-centered"
                         role="document"
                       >
-                        <div class="modal-content">
-                          <div class="modal-header"></div>
-                          <div class="modal-body">
-                            <ul class="list-group list-group-flush">
-                              <li class="list-group-item text-secondary">
+                        <div className="modal-content">
+                          <div className="modal-header"></div>
+                          <div className="modal-body">
+                            <ul className="list-group list-group-flush">
+                              <li className="list-group-item text-secondary">
                               {bookings
                                 .filter((booking) => booking.id === specificBookingId)
                                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort bookings by creation time, recent first
@@ -549,10 +562,10 @@ export default function PetOwnerDashboard() {
                       </div>
                     </div>
 
-                    <ul class="list-group list-group-flush border-top-0">
+                    <ul className="list-group list-group-flush border-top-0">
                       {bookings.length ? bookings.map((booking) => {
                         return (
-                          <li class="list-group-item text-secondary p-1">
+                          <li className="list-group-item text-secondary p-1">
                             <div 
                               className="card my-2 shadow overflow-auto p-1 mb-3 mb-md-0 mr-md-2 border-top-0"
                               style={{ maxWidth: "800px", maxHeight: "500px" }}
@@ -594,16 +607,16 @@ export default function PetOwnerDashboard() {
                     <div className="card-header">
                       Here are the services that we offer:
                     </div>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item">
                         <CheckCircleOutlineIcon className="me-1 text-success" />
                         Home Care (24 Hours) starting at ₱450.00
                       </li>
-                      <li class="list-group-item">
+                      <li className="list-group-item">
                         <CheckCircleOutlineIcon className="me-1 text-success" />
                         Day Care (10 Hours) starting at ₱250.00
                       </li>
-                      <li class="list-group-item">
+                      <li className="list-group-item">
                         <CheckCircleOutlineIcon className="me-1 text-success" />
                         Errands Care (4 Hours) starting at ₱180.00
                       </li>
@@ -618,20 +631,20 @@ export default function PetOwnerDashboard() {
                       Before boarding in, let's check if you meet the
                       requirements:
                     </div>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">
+                    <ul className="list-group list-group-flush">
+                      <li className="list-group-item">
                         <CheckCircleOutlineIcon className="me-1 text-success" />
                         Updated Vaccine Cards
                       </li>
-                      <li class="list-group-item">
+                      <li className="list-group-item">
                         <CheckCircleOutlineIcon className="me-1 text-success" />
                         Recent Tick and Flea Treatment
                       </li>
-                      <li class="list-group-item">
+                      <li className="list-group-item">
                         <CheckCircleOutlineIcon className="me-1 text-success" />
                         Bath/Clean Pets
                       </li>
-                      <li class="list-group-item">
+                      <li className="list-group-item">
                         <CheckCircleOutlineIcon className="me-1 text-success" />
                         1 Diaper per Day/Stay
                       </li>
@@ -664,7 +677,7 @@ export default function PetOwnerDashboard() {
                   <div className="col">
                     <div className="overflow-auto card shadow">
                       <div
-                        class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light"
+                        className="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light"
                         style={{ maxWidth: "800px", maxHeight: "500px" }}
                       >
                         {pets.length ? pets.map((pet, index) => {
@@ -679,15 +692,38 @@ export default function PetOwnerDashboard() {
                                     alignItems: "center",
                                   }}
                                 >
-                                  <div className="align-middle">
+                                  <div className="align-middle" style={{ position: "relative" }}>
                                     <label htmlFor={`pet-avatar-upload-${pet.id}`}>
-                                      <Avatar
-                                        className="img-fluid me-2"
-                                        alt={`${pets[index].name}`}
-                                        src={pets[index].petPhoto}
-                                        sx={{ width: 75, height: 75 }}
-                                        style={{ cursor: "pointer" }}
-                                      />
+                                      <div
+                                        style={{
+                                          width: 75,
+                                          height: 75,
+                                          borderRadius: "50%",
+                                          overflow: "hidden",
+                                          position: "relative",
+                                          cursor: "pointer",
+                                        }}
+                                      >
+                                        <img
+                                          src={pets[index].petPhoto}
+                                          alt={`${pets[index].name}`}
+                                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                        />
+                                        <IconButton
+                                          color="primary"
+                                          component="span"
+                                          style={{
+                                            opacity: .5,
+                                            position: "absolute",
+                                            bottom: 0,
+                                            right: 0,
+                                            backgroundColor: "white",
+                                            borderRadius: "50%",
+                                          }}
+                                        >
+                                          <AddIcon />
+                                        </IconButton>
+                                      </div>
                                     </label>
                                     <input
                                       id={`pet-avatar-upload-${pet.id}`}
@@ -698,9 +734,9 @@ export default function PetOwnerDashboard() {
                                     />
                                     <div>
                                       <button 
-                                      className="yuki-font-color btn btn-link ps-0"
-                                      data-toggle="modal"
-                                      data-target={"#PetVaccineModal" + pet.id}
+                                        className="yuki-font-color btn btn-link ps-0"
+                                        data-toggle="modal"
+                                        data-target={"#PetVaccineModal" + pet.id}
                                       >View Pet Vaccine</button>
                                     </div>
                                     <span className="card-title h5">
