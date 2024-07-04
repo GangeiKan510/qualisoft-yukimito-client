@@ -751,27 +751,16 @@ export default function PetOwnerDashboard() {
                             <div className="card my-2 shadow-sm" key={pet.id}>
                               <div className="card-header">{pet.breed}</div>
                               <div className="card-body">
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <div
-                                    className="align-middle"
-                                    style={{ position: "relative" }}
-                                  >
-                                    <label
-                                      htmlFor={`pet-avatar-upload-${pet.id}`}
-                                    >
+                                <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                                  <div className="align-middle position-relative mb-3 mb-md-0">
+                                    <label htmlFor={`pet-avatar-upload-${pet.id}`} className="d-block">
                                       <div
+                                        className="position-relative"
                                         style={{
                                           width: 75,
                                           height: 75,
                                           borderRadius: "50%",
                                           overflow: "hidden",
-                                          position: "relative",
                                           cursor: "pointer",
                                         }}
                                       >
@@ -805,29 +794,23 @@ export default function PetOwnerDashboard() {
                                       type="file"
                                       accept="image/*"
                                       style={{ display: "none" }}
-                                      onChange={(e) =>
-                                        handleUploadPetAvatar(e, pet.id)
-                                      }
+                                      onChange={(e) => handleUploadPetAvatar(e, pet.id)}
                                     />
                                     <div>
                                       <button
                                         className="yuki-font-color btn btn-link ps-0"
                                         data-toggle="modal"
-                                        data-target={"#PetVaccineModal" + pet.id}
+                                        data-target={`#PetVaccineModal${pet.id}`}
                                       >
                                         View Pet Vaccine
                                       </button>
                                     </div>
-                                    <span className="card-title h5">
-                                      {pet.name}
-                                    </span>
+                                    <span className="card-title h5">{pet.name}</span>
                                     &nbsp;
                                     <span className="span">({pet.size})</span>
-                                    {pet.vaccinated ? (
-                                      <VaccinesIcon className="text-success" />
-                                    ) : null}
+                                    {pet.vaccinated && <VaccinesIcon className="text-success" />}
                                   </div>
-                                  <div>
+                                  <div className="d-flex flex-column flex-md-row align-items-center">
                                     <button
                                       className="btn btn-outline-secondary mx-2"
                                       data-toggle="modal"
@@ -835,15 +818,14 @@ export default function PetOwnerDashboard() {
                                     >
                                       Edit
                                     </button>
-                                    <a
+                                    <button
                                       type="button"
                                       className="btn btn-danger"
                                       data-toggle="modal"
                                       data-target={`#HomeCareBookNow${pet.id}`}
-                                      href="/"
                                     >
                                       Delete
-                                    </a>
+                                    </button>
                                     <div
                                       className="modal fade"
                                       id={`HomeCareBookNow${pet.id}`}
@@ -852,16 +834,10 @@ export default function PetOwnerDashboard() {
                                       aria-labelledby="HomeCareBookNowCenterTitle"
                                       aria-hidden="true"
                                     >
-                                      <div
-                                        className="modal-dialog modal-dialog-centered"
-                                        role="document"
-                                      >
+                                      <div className="modal-dialog modal-dialog-centered" role="document">
                                         <div className="modal-content">
                                           <div className="modal-header">
-                                            <h5
-                                              className="modal-title"
-                                              id="HomeCareBookNowLongTitle"
-                                            >
+                                            <h5 className="modal-title" id="HomeCareBookNowLongTitle">
                                               Delete Pet
                                             </h5>
                                           </div>
@@ -881,9 +857,7 @@ export default function PetOwnerDashboard() {
                                               id={pet.id}
                                               type="button"
                                               className="btn btn-primary button-color"
-                                              onClick={() =>
-                                                handleDeletePet(pet.id)
-                                              }
+                                              onClick={() => handleDeletePet(pet.id)}
                                             >
                                               Yes
                                             </button>
@@ -912,6 +886,7 @@ export default function PetOwnerDashboard() {
                                 petVaccinePhoto={pet.vaccinePhoto}
                               />
                             </div>
+
                           );
                         })
                       ) : (
