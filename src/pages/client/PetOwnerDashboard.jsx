@@ -11,6 +11,7 @@ import Logout from "../partials/Logout";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import VaccinesIcon from "@mui/icons-material/Vaccines";
 import coverImage from "../../assets/images/cover.svg";
+import boneImage from "../../assets/images/bone.svg";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
 import { DeleteBooking } from "../../components/partials/DeleteBooking";
 import EditPetForm from "../partials/EditPetForm";
@@ -30,11 +31,13 @@ export default function PetOwnerDashboard() {
     address: String,
     contactNumber: Number,
     email: String,
-    profilePhoto: String
+    profilePhoto: String,
   });
 
   const [pets, setPets] = useState([]);
-  const [profilePicture, setProfilePicture] = useState(petOwnerDetails.profilePhoto);
+  const [profilePicture, setProfilePicture] = useState(
+    petOwnerDetails.profilePhoto
+  );
 
   const [pet, setPet] = useState({
     name: String,
@@ -42,7 +45,7 @@ export default function PetOwnerDashboard() {
     birthday: String,
     size: String,
     petOwnerId: userSelected.id,
-    filename: String
+    filename: String,
   });
 
   const [bookings, setBookings] = useState([]);
@@ -85,11 +88,11 @@ export default function PetOwnerDashboard() {
 
   const handleUploadPetAvatar = async (event, petId) => {
     const file = event.target.files[0];
-  
+
     const formData = new FormData();
-    formData.append('_method', 'PUT');
+    formData.append("_method", "PUT");
     formData.append("petProfilePhoto", file);
-  
+
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/pet/uploadPetProfile/${petId}`,
@@ -97,7 +100,7 @@ export default function PetOwnerDashboard() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -121,22 +124,23 @@ export default function PetOwnerDashboard() {
 
     const formData = new FormData();
 
-    formData.append('_method', 'PUT');
+    formData.append("_method", "PUT");
     formData.append("filename", file);
 
-    await axios.put(
-      `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/uploadProfilePicture/${ownerId}`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${token}`
-        },
-      }
-    )
-    .then(response => console.log(response))
-    .catch(error => console.log(error));
-    
+    await axios
+      .put(
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/uploadProfilePicture/${ownerId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => console.log(response))
+      .catch((error) => console.log(error));
+
     window.location.reload();
   };
 
@@ -150,19 +154,19 @@ export default function PetOwnerDashboard() {
       ...petOwnerDetails,
       [event.target.name]: event.target.value,
     });
-    
+
     if (petOwnerDetails.ownerName && petOwnerDetails.ownerName.length <= 5) {
       setOwnerNameError("Name must be at least 5 characters long");
     } else {
       setOwnerNameError("");
     }
-    
+
     if (petOwnerDetails.username && petOwnerDetails.username.length <= 5) {
       setUsernameError("Username must be at least 5 characters long");
     } else {
       setUsernameError("");
     }
-    
+
     if (
       petOwnerDetails.contactNumber &&
       regex.test(petOwnerDetails.contactNumber) &&
@@ -172,7 +176,7 @@ export default function PetOwnerDashboard() {
     } else {
       setContactNumberError("Invalid Contact Number");
     }
-    
+
     if (petOwnerDetails.email && petOwnerDetails.email.length < 5) {
       setEmailError("Invalid Email Address");
     } else {
@@ -194,14 +198,14 @@ export default function PetOwnerDashboard() {
     let formData = new FormData();
 
     for (let detail in pet) {
-      if (detail === 'vaccinePhoto') {
-        formData.append('filename', pet[detail]);
+      if (detail === "vaccinePhoto") {
+        formData.append("filename", pet[detail]);
       } else {
         formData.append(detail, pet[detail]);
       }
     }
 
-    formData.append('_method', 'POST'); 
+    formData.append("_method", "POST");
 
     try {
       const response = await axios.post(
@@ -210,7 +214,7 @@ export default function PetOwnerDashboard() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -282,30 +286,39 @@ export default function PetOwnerDashboard() {
       navigate("/");
     }
 
-    fetch(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getBooking/${userSelected.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    fetch(
+      `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getBooking/${userSelected.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then((response) => response.json())
       .then((fetchedBookings) => setBookings(fetchedBookings))
       .catch((error) => console.log(error));
 
-    fetch(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getPets/pet/${userSelected.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    fetch(
+      `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/getPets/pet/${userSelected.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
       .then((response) => response.json())
       .then((fetchedPets) => setPets(fetchedPets))
       .catch((error) => console.log(error));
 
     axios
-      .get(`${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/getPetOwner/${userSelected.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .get(
+        `${process.env.REACT_APP_PUBLIC_API_SERVER}/api/auth/getPetOwner/${userSelected.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         const userDetails = response.data;
 
@@ -315,7 +328,7 @@ export default function PetOwnerDashboard() {
           address: userDetails.address,
           contactNumber: userDetails.contact_number,
           email: userDetails.email_address,
-          profilePhoto: userDetails.profilePhoto
+          profilePhoto: userDetails.profilePhoto,
         });
 
         setUserData({
@@ -324,7 +337,7 @@ export default function PetOwnerDashboard() {
           address: userDetails.address,
           contactNumber: userDetails.contact_number,
           email: userDetails.email_address,
-          profilePhoto: userDetails.profilePhoto
+          profilePhoto: userDetails.profilePhoto,
         });
       })
       .catch((error) => {
@@ -339,7 +352,7 @@ export default function PetOwnerDashboard() {
 
   return (
     <>
-      <NavBarMain navItems={navItems} customLink={<Logout link="/"/>} />
+      <NavBarMain navItems={navItems} customLink={<Logout link="/" />} />
       <div className="mt-5 pt-3 px-5 yuki-color2 text-center">
         Welcome back to Yukimito Services!
       </div>
@@ -367,24 +380,29 @@ export default function PetOwnerDashboard() {
                       position: "relative",
                       transform: "translate(10%, -80%)",
                       cursor: "pointer",
+                      zIndex: 2, // Ensure the avatar is above other elements
                     }}
                   >
                     <img
                       src={profilePicture || petOwnerDetails.profilePhoto}
                       alt="Profile Picture"
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                     <IconButton
                       color="primary"
                       component="span"
                       style={{
-                        opacity: .5,
+                        opacity: 0.5,
                         position: "absolute",
                         bottom: 10,
                         right: 10,
                         backgroundColor: "white",
                         borderRadius: "50%",
-                        zIndex: 1,
+                        zIndex: 3, // Ensure the IconButton is above the avatar
                       }}
                     >
                       <AddIcon />
@@ -403,30 +421,7 @@ export default function PetOwnerDashboard() {
             <div className="col align-middle">
               <div className="d-flex justify-content-between align-content-center">
                 <div className="col">
-                  <h1>
-                    {userData.ownerName}{" "}
-                  </h1>
-                </div>
-                <div className="col d-flex flex-row-reverse lg">
-                  <div>
-                    <EditPetProfileForm
-                      ownerName={petOwnerDetails.ownerName}
-                      username={petOwnerDetails.username}
-                      contactNumber={petOwnerDetails.contactNumber}
-                      address={petOwnerDetails.address}
-                      email={petOwnerDetails.email}
-                      openEdit={openEdit}
-                      handleUpdateUser={handleUpdateUser}
-                      handleUpdate={handleUpdate}
-                      updateFormData={updateFormData}
-                      handleEditOpen={handleEditOpen}
-                      handleEditCancel={handleEditCancel}
-                      ownerNameError={ownerNameError}
-                      usernameError={usernameError}
-                      contactNumberError={contactNumberError}
-                      emailError={emailError}
-                    />
-                  </div>
+                  <h1>{userData.ownerName} </h1>
                 </div>
               </div>
             </div>
@@ -437,21 +432,50 @@ export default function PetOwnerDashboard() {
             <hr />
 
             <div className="d-flex justify-content-center mx-auto">
-              <a
-                className="btn yuki-color text-white"
-                href="/PetOwnerBookingConfirmation"
+              <div
+                style={{
+                  backgroundImage: `url(${boneImage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  width: "150px",
+                  height: "100px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+                onClick={() => navigate("/PetOwnerBookingConfirmation")}
               >
-                Book Now!
-              </a>
+                <span className="text-white">Book Now!</span>
+              </div>
             </div>
 
             <div className="py-3">
               <div className="card shadow">
-                <div className="card-header">
+                <div className="card-header d-flex justify-content-between align-items-center">
                   <b>Pet Owner Details</b>
+                  <EditPetProfileForm
+                    ownerName={petOwnerDetails.ownerName}
+                    username={petOwnerDetails.username}
+                    contactNumber={petOwnerDetails.contactNumber}
+                    address={petOwnerDetails.address}
+                    email={petOwnerDetails.email}
+                    openEdit={openEdit}
+                    handleUpdateUser={handleUpdateUser}
+                    handleUpdate={handleUpdate}
+                    updateFormData={updateFormData}
+                    handleEditOpen={handleEditOpen}
+                    handleEditCancel={handleEditCancel}
+                    ownerNameError={ownerNameError}
+                    usernameError={usernameError}
+                    contactNumberError={contactNumberError}
+                    emailError={emailError}
+                  />
                 </div>
                 <div className="card-body">
-                  <h5 className="card-title">Address: {userData.address ? userData.address : "No address"}</h5>
+                  <h5 className="card-title">
+                    Address: {userData.address ? userData.address : "No address"}
+                  </h5>
                   <p className="card-text text-secondary">
                     Contact Number: {userData.contactNumber}
                     <br />
@@ -472,7 +496,10 @@ export default function PetOwnerDashboard() {
                     <b>
                       Bookings <ArrowOutwardIcon />
                     </b>
-                    <span className="text-secondary"> Click card to expand details.</span>
+                    <span className="text-secondary">
+                      {" "}
+                      Click card to expand details.
+                    </span>
                   </h5>
 
                   <div
@@ -498,63 +525,87 @@ export default function PetOwnerDashboard() {
                           <div className="modal-body">
                             <ul className="list-group list-group-flush">
                               <li className="list-group-item text-secondary">
-                              {bookings
-                                .filter((booking) => booking.id === specificBookingId)
-                                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort bookings by creation time, recent first
-                                .map((booking) => {
-                                  return (
-                                    <div key={booking.id}>
-                                      <p>
-                                        <h4
-                                          className="font-weight-bold text-black"
-                                          id="exampleModalLongTitle"
+                                {bookings
+                                  .filter(
+                                    (booking) => booking.id === specificBookingId
+                                  )
+                                  .sort(
+                                    (a, b) =>
+                                      new Date(b.createdAt) -
+                                      new Date(a.createdAt)
+                                  ) // Sort bookings by creation time, recent first
+                                  .map((booking) => {
+                                    return (
+                                      <div key={booking.id}>
+                                        <p>
+                                          <h4
+                                            className="font-weight-bold text-black"
+                                            id="exampleModalLongTitle"
+                                            style={{ marginBottom: "-15px" }}
+                                          >
+                                            {booking.service_type ===
+                                              "dayCare" && <span>Day Care</span>}
+                                            {booking.service_type ===
+                                              "errandsCare" && (
+                                              <span>Errands Care</span>
+                                            )}
+                                            {booking.service_type ===
+                                              "homeCare" && (
+                                              <span>Home Care</span>
+                                            )}
+                                            &nbsp;Booking Details
+                                          </h4>
+                                          <br style={{ marginTop: "0px" }} />
+                                          Checkin Time:{" "}
+                                          {new Date(
+                                            booking.checkIn
+                                          ).toDateString()}
+                                          <br />
+                                          Checkout Time:{" "}
+                                          {new Date(
+                                            booking.checkOut
+                                          ).toDateString()}
+                                          <br />
+                                          Total Price: ₱
+                                          {booking.total_price}.00
+                                          <br />
+                                          Pets Included:{" "}
+                                          {pets
+                                            .filter((pet) =>
+                                              booking.petList.includes(pet.id)
+                                            )
+                                            .map((pet) => pet.name)
+                                            .map((petName) => (
+                                              <span>{petName + ", "}</span>
+                                            ))}
+                                          <br />
+                                          <div>
+                                            <span>Status:&nbsp;</span>
+                                            <span
+                                              className="fs-5"
+                                              style={{
+                                                color:
+                                                  booking.status === "pending"
+                                                    ? "#ffc007"
+                                                    : booking.status ===
+                                                      "rejected"
+                                                    ? "#dc3444"
+                                                    : "#198753",
+                                              }}
+                                            >
+                                              {booking.status}
+                                            </span>
+                                          </div>
+                                        </p>
+                                        <div
+                                          className="modal-footer"
                                           style={{ marginBottom: "-15px" }}
                                         >
-                                          {booking.service_type === "dayCare" && <span>Day Care</span>}
-                                          {booking.service_type === "errandsCare" && (
-                                            <span>Errands Care</span>
-                                          )}
-                                          {booking.service_type === "homeCare" && <span>Home Care</span>}
-                                          &nbsp;Booking Details
-                                        </h4>
-                                        <br style={{ marginTop: "0px" }} />
-                                        Checkin Time: {new Date(booking.checkIn).toDateString()}
-                                        <br />
-                                        Checkout Time: {new Date(booking.checkOut).toDateString()}
-                                        <br />
-                                        Total Price: ₱{booking.total_price}.00
-                                        <br />
-                                        Pets Included:{" "}
-                                        {pets
-                                          .filter((pet) => booking.petList.includes(pet.id))
-                                          .map((pet) => pet.name)
-                                          .map((petName) => (
-                                            <span>{petName + ", "}</span>
-                                          ))}
-                                        <br />
-                                        <div>
-                                          <span>Status:&nbsp;</span>
-                                          <span
-                                            className="fs-5"
-                                            style={{
-                                              color:
-                                                booking.status === "pending"
-                                                  ? "#ffc007"
-                                                  : booking.status === "rejected"
-                                                  ? "#dc3444"
-                                                  : "#198753",
-                                            }}
-                                          >
-                                            {booking.status}
-                                          </span>
+                                          <DeleteBooking bookingId={booking.id} />
                                         </div>
-                                      </p>
-                                      <div className="modal-footer" style={{ marginBottom: "-15px" }}>
-                                        <DeleteBooking bookingId={booking.id} />
                                       </div>
-                                    </div>
-                                  );
-                                })}
+                                    );
+                                  })}
                               </li>
                             </ul>
                           </div>
@@ -563,40 +614,64 @@ export default function PetOwnerDashboard() {
                     </div>
 
                     <ul className="list-group list-group-flush border-top-0">
-                      {bookings.length ? bookings.map((booking) => {
-                        return (
-                          <li className="list-group-item text-secondary p-1">
-                            <div 
-                              className="card my-2 shadow overflow-auto p-1 mb-3 mb-md-0 mr-md-2 border-top-0"
-                              style={{ maxWidth: "800px", maxHeight: "500px" }}
-                              onClick={() => setSelectedBookingId(booking.id)}
-                            >
-                              <div className="card-body">
-                                <h5 className="card-title">
-                                  {booking.service_type === "dayCare" && (
-                                    <span>Day Care</span>
+                      {bookings.length ? (
+                        bookings.map((booking) => {
+                          return (
+                            <li className="list-group-item text-secondary p-1">
+                              <div
+                                className="card my-2 shadow overflow-auto p-1 mb-3 mb-md-0 mr-md-2 border-top-0"
+                                style={{
+                                  maxWidth: "800px",
+                                  maxHeight: "500px",
+                                }}
+                                onClick={() =>
+                                  setSelectedBookingId(booking.id)
+                                }
+                              >
+                                <div className="card-body">
+                                  <h5 className="card-title">
+                                    {booking.service_type === "dayCare" && (
+                                      <span>Day Care</span>
                                     )}
-                                  {booking.service_type === "errandsCare" && (
-                                    <span>Errands Care</span>
+                                    {booking.service_type === "errandsCare" && (
+                                      <span>Errands Care</span>
                                     )}
-                                  {booking.service_type === "homeCare" && (
-                                    <span>Home Care</span>
+                                    {booking.service_type === "homeCare" && (
+                                      <span>Home Care</span>
                                     )}
-                                  &nbsp;Booking Details
-                                </h5>
-                                <p>Total Price: ₱{booking.total_price}.00</p>
-                                <span>Status:&nbsp;</span>
-                                <span className="fs-5" style={{color: booking.status === 'pending' ? '#ffc007' : booking.status === 'rejected' ? '#dc3444' : '#198753'}}>
-                                  {booking.status}
-                                </span>
-                                <p>
-                                  {booking.status === "rejected" && (<p>Reason for Rejection: {booking.reasonOfRejection}</p>)}
-                                </p>    
+                                    &nbsp;Booking Details
+                                  </h5>
+                                  <p>Total Price: ₱{booking.total_price}.00</p>
+                                  <span>Status:&nbsp;</span>
+                                  <span
+                                    className="fs-5"
+                                    style={{
+                                      color:
+                                        booking.status === "pending"
+                                          ? "#ffc007"
+                                          : booking.status === "rejected"
+                                          ? "#dc3444"
+                                          : "#198753",
+                                    }}
+                                  >
+                                    {booking.status}
+                                  </span>
+                                  <p>
+                                    {booking.status === "rejected" && (
+                                      <p>
+                                        Reason for Rejection:{" "}
+                                        {booking.reasonOfRejection}
+                                      </p>
+                                    )}
+                                  </p>
+                                </div>
                               </div>
-                            </div>
-                          </li>
-                        );
-                      }) : <p className="my-2 text-center">No bookings yet.</p>}
+                            </li>
+                          );
+                        })
+                      ) : (
+                        <p className="my-2 text-center">No bookings yet.</p>
+                      )}
                     </ul>
                   </div>
 
@@ -653,7 +728,7 @@ export default function PetOwnerDashboard() {
                 </div>
               </div>
 
-              <div className="col-lg-8 col-s-12">
+              <div className="col-lg-8 col-s-12 px-5">
                 <div className="row py-3">
                   <div className="col align-middle">
                     <h5>
@@ -680,162 +755,182 @@ export default function PetOwnerDashboard() {
                         className="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light"
                         style={{ maxWidth: "800px", maxHeight: "500px" }}
                       >
-                        {pets.length ? pets.map((pet, index) => {
-                          return (
-                            <div className="card my-2 shadow-sm" key={pet.id}>
-                              <div className="card-header">{pet.breed}</div>
-                              <div className="card-body">
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <div className="align-middle" style={{ position: "relative" }}>
-                                    <label htmlFor={`pet-avatar-upload-${pet.id}`}>
-                                      <div
-                                        style={{
-                                          width: 75,
-                                          height: 75,
-                                          borderRadius: "50%",
-                                          overflow: "hidden",
-                                          position: "relative",
-                                          cursor: "pointer",
-                                        }}
-                                      >
-                                        <img
-                                          src={pets[index].petPhoto}
-                                          alt={`${pets[index].name}`}
-                                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                                        />
-                                        <IconButton
-                                          color="primary"
-                                          component="span"
+                        {pets.length ? (
+                          pets.map((pet, index) => {
+                            return (
+                              <div className="card my-2 shadow-sm" key={pet.id}>
+                                <div className="card-header">{pet.breed}</div>
+                                <div className="card-body">
+                                  <div
+                                    style={{
+                                      display: "flex",
+                                      justifyContent: "space-between",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <div
+                                      className="align-middle"
+                                      style={{ position: "relative" }}
+                                    >
+                                      <label htmlFor={`pet-avatar-upload-${pet.id}`}>
+                                        <div
                                           style={{
-                                            opacity: .5,
-                                            position: "absolute",
-                                            bottom: 0,
-                                            right: 0,
-                                            backgroundColor: "white",
+                                            width: 75,
+                                            height: 75,
                                             borderRadius: "50%",
+                                            overflow: "hidden",
+                                            position: "relative",
+                                            cursor: "pointer",
                                           }}
                                         >
-                                          <AddIcon />
-                                        </IconButton>
+                                          <img
+                                            src={pets[index].petPhoto}
+                                            alt={`${pets[index].name}`}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              objectFit: "cover",
+                                            }}
+                                          />
+                                          <IconButton
+                                            color="primary"
+                                            component="span"
+                                            style={{
+                                              opacity: 0.5,
+                                              position: "absolute",
+                                              bottom: 0,
+                                              right: 0,
+                                              backgroundColor: "white",
+                                              borderRadius: "50%",
+                                            }}
+                                          >
+                                            <AddIcon />
+                                          </IconButton>
+                                        </div>
+                                      </label>
+                                      <input
+                                        id={`pet-avatar-upload-${pet.id}`}
+                                        type="file"
+                                        accept="image/*"
+                                        style={{ display: "none" }}
+                                        onChange={(e) =>
+                                          handleUploadPetAvatar(e, pet.id)
+                                        }
+                                      />
+                                      <div>
+                                        <button
+                                          className="yuki-font-color btn btn-link ps-0"
+                                          data-toggle="modal"
+                                          data-target={"#PetVaccineModal" + pet.id}
+                                        >
+                                          View Pet Vaccine
+                                        </button>
                                       </div>
-                                    </label>
-                                    <input
-                                      id={`pet-avatar-upload-${pet.id}`}
-                                      type="file"
-                                      accept="image/*"
-                                      style={{ display: "none" }}
-                                      onChange={(e) => handleUploadPetAvatar(e, pet.id)}
-                                    />
-                                    <div>
-                                      <button 
-                                        className="yuki-font-color btn btn-link ps-0"
-                                        data-toggle="modal"
-                                        data-target={"#PetVaccineModal" + pet.id}
-                                      >View Pet Vaccine</button>
+                                      <span className="card-title h5">
+                                        {pet.name}
+                                      </span>
+                                      &nbsp;
+                                      <span className="span">({pet.size})</span>
+                                      {pet.vaccinated ? (
+                                        <VaccinesIcon className="text-success" />
+                                      ) : null}
                                     </div>
-                                    <span className="card-title h5">
-                                      {pet.name}
-                                    </span>
-                                    &nbsp;
-                                    <span className="span">({pet.size})</span>
-                                    {pet.vaccinated ? <VaccinesIcon className="text-success" /> : null}
-                                  </div>
-                                  <div>
-                                    <button
-                                      className="btn btn-outline-secondary mx-2"
-                                      data-toggle="modal"
-                                      data-target={`#editPetForm${pet.id}`}
-                                    >
-                                      Edit
-                                    </button>
-                                    <a
-                                      type="button"
-                                      className="btn btn-danger"
-                                      data-toggle="modal"
-                                      data-target={`#HomeCareBookNow${pet.id}`}
-                                      href="/"
-                                    >
-                                      Delete
-                                    </a>
-                                    <div
-                                      className="modal fade"
-                                      id={`HomeCareBookNow${pet.id}`}
-                                      tabIndex="-1"
-                                      role="dialog"
-                                      aria-labelledby="HomeCareBookNowCenterTitle"
-                                      aria-hidden="true"
-                                    >
-                                      <div
-                                        className="modal-dialog modal-dialog-centered"
-                                        role="document"
+                                    <div>
+                                      <button
+                                        className="btn btn-outline-secondary mx-2"
+                                        data-toggle="modal"
+                                        data-target={`#editPetForm${pet.id}`}
                                       >
-                                        <div className="modal-content">
-                                          <div className="modal-header">
-                                            <h5
-                                              className="modal-title"
-                                              id="HomeCareBookNowLongTitle"
-                                            >
-                                              Delete Pet
-                                            </h5>
-                                          </div>
-                                          <div className="modal-body">
-                                            Are you sure you want to delete pet?
-                                          </div>
-                                          <div className="modal-footer">
-                                            <button
-                                              type="button"
-                                              className="btn btn-secondary"
-                                              data-dismiss="modal"
-                                              onClick={handleCancel}
-                                            >
-                                              Cancel
-                                            </button>
-                                            <button
-                                              id={pet.id}
-                                              type="button"
-                                              className="btn btn-primary button-color"
-                                              onClick={() => handleDeletePet(pet.id)}
-                                            >
-                                              Yes
-                                            </button>
+                                        Edit
+                                      </button>
+                                      <a
+                                        type="button"
+                                        className="btn btn-danger"
+                                        data-toggle="modal"
+                                        data-target={`#HomeCareBookNow${pet.id}`}
+                                        href="/"
+                                      >
+                                        Delete
+                                      </a>
+                                      <div
+                                        className="modal fade"
+                                        id={`HomeCareBookNow${pet.id}`}
+                                        tabIndex="-1"
+                                        role="dialog"
+                                        aria-labelledby="HomeCareBookNowCenterTitle"
+                                        aria-hidden="true"
+                                      >
+                                        <div
+                                          className="modal-dialog modal-dialog-centered"
+                                          role="document"
+                                        >
+                                          <div className="modal-content">
+                                            <div className="modal-header">
+                                              <h5
+                                                className="modal-title"
+                                                id="HomeCareBookNowLongTitle"
+                                              >
+                                                Delete Pet
+                                              </h5>
+                                            </div>
+                                            <div className="modal-body">
+                                              Are you sure you want to delete pet?
+                                            </div>
+                                            <div className="modal-footer">
+                                              <button
+                                                type="button"
+                                                className="btn btn-secondary"
+                                                data-dismiss="modal"
+                                                onClick={handleCancel}
+                                              >
+                                                Cancel
+                                              </button>
+                                              <button
+                                                id={pet.id}
+                                                type="button"
+                                                className="btn btn-primary button-color"
+                                                onClick={() =>
+                                                  handleDeletePet(pet.id)
+                                                }
+                                              >
+                                                Yes
+                                              </button>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
+                                  <p className="card-text text-secondary">
+                                    {pet.birthday}
+                                    <br />
+                                  </p>
                                 </div>
-                                <p className="card-text text-secondary">
-                                  {pet.birthday}
-                                  <br />
-                                </p>
+                                <EditPetForm
+                                  petId={pet.id}
+                                  petName={pet.name}
+                                  petBreed={pet.breed}
+                                  petSize={pet.size}
+                                  petBirthday={pet.birthday}
+                                />
+                                <VaccinePhotoModal
+                                  vaccinated={pet.vaccinated}
+                                  petId={pet.id}
+                                  petName={pet.name}
+                                  petVaccinePhoto={pet.vaccinePhoto}
+                                />
                               </div>
-                              <EditPetForm 
-                                petId={pet.id}
-                                petName={pet.name} 
-                                petBreed={pet.breed}
-                                petSize={pet.size}
-                                petBirthday={pet.birthday}
-                              />
-                              <VaccinePhotoModal
-                                vaccinated={pet.vaccinated}
-                                petId={pet.id}
-                                petName={pet.name}
-                                petVaccinePhoto={pet.vaccinePhoto}
-                              />
-                            </div>
-                          );
-                        }) : <p className="text-center">No pets added yet.</p>}
+                            );
+                          })
+                        ) : (
+                          <p className="text-center">No pets added yet.</p>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </Box>
