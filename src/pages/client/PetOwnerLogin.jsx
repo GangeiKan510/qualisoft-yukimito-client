@@ -11,6 +11,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import AlertTitle from '@mui/material/AlertTitle';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import Spinner from '../../components/Spinner';
 
 const inputDetails = [
   {
@@ -41,6 +42,7 @@ async function loginUser(credentials) {
 
 const PetOwnerLogin = () => {
   const [isInvalidLogin, setIsInvalidLogin] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [input, setInput] = useState({
     username: '',
@@ -55,7 +57,10 @@ const PetOwnerLogin = () => {
   }, [navigate]);
 
   async function handleLogin() {
+    setIsLoading(true);
+    setIsInvalidLogin(false);
     const success = await loginUser(input);
+    setIsLoading(false);
 
     if (success) {
       navigate('/PetOwnerDashboard');
@@ -124,7 +129,9 @@ const PetOwnerLogin = () => {
                           )}
                         </Stack>
                         <div className="d-grid gap-2 my-2">
-                          <button className="btn btn-primary button-color" onClick={handleLogin} type="button">Login</button>
+                          <button className="btn btn-primary button-color" onClick={handleLogin} type="button" disabled={isLoading}>
+                            {isLoading ? <Spinner /> : "Login"}
+                          </button>
                         </div>
                         <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
                           <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
