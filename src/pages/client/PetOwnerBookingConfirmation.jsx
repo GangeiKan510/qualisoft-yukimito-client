@@ -8,16 +8,17 @@ import { Paper } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { TextField, Autocomplete } from "@mui/material";
+import { TextField, Autocomplete, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import SelectServiceInput from "../partials/SelectServiceInput";
 import Stack from '@mui/material/Stack';
 import AlertTitle from '@mui/material/AlertTitle';
 import Alert from '@mui/material/Alert';
+import Spinner from "../../components/Spinner";
 
 import calculatePaymentBreakdown from "./controllers/CalculatePaymentBreakdown";
-import { homeCare, dayCare, errandsCare } from './data/ServiceDetails'
+import { homeCare, dayCare, errandsCare } from './data/ServiceDetails';
 
 const PetOwnerBookingHomeCare = () => {
   const navigate = useNavigate();
@@ -26,8 +27,9 @@ const PetOwnerBookingHomeCare = () => {
   let userSelected = jwtDecode(token);
 
   const [pets, setPets] = useState([]);
-  const [specificInstructions, setSpecificInstructions] = useState(""); // State to hold specific instructions
-
+  const [specificInstructions, setSpecificInstructions] = useState(""); 
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [bookingDetails, setBookingDetails] = useState({
     service: "",
     checkIn: "",  
@@ -45,30 +47,41 @@ const PetOwnerBookingHomeCare = () => {
   const petList = pets.map((pet) => pet.name);
 
   const handleCheckInInput = (event) => {
+    let newCheckIn = event.$d;
+    let currentDate = new Date();
+    let oneMonthLater = new Date();
+    oneMonthLater.setMonth(oneMonthLater.getMonth() + 1);
+
+    if (newCheckIn < currentDate || newCheckIn > oneMonthLater) {
+      setErrors((prev) => ({ ...prev, checkIn: 'Check-in date must be within the next month.' }));
+    } else {
+      setErrors((prev) => ({ ...prev, checkIn: '' }));
+    }
+
     if (bookingDetails.service) {
       let service = bookingDetails.service;
 
       if (service === "Home Care") {
         setBookingDetails({
           ...bookingDetails,
-          checkIn: event.$d,
-          checkOut: moment(event.$d).add(24, 'h').toDate()
+          checkIn: newCheckIn,
+          checkOut: moment(newCheckIn).add(24, 'h').toDate()
         });
       } else if (service === "Day Care") {
         setBookingDetails({
           ...bookingDetails,
-          checkIn: event.$d,
-          checkOut: moment(event.$d).add(10, 'h').toDate()
+          checkIn: newCheckIn,
+          checkOut: moment(newCheckIn).add(10, 'h').toDate()
         });
       } else {
         setBookingDetails({
           ...bookingDetails,
-          checkIn: event.$d,
-          checkOut: moment(event.$d).add(4, 'h').toDate()
+          checkIn: newCheckIn,
+          checkOut: moment(newCheckIn).add(4, 'h').toDate()
         });
       }
     } else {
-      alert("Please select a service first!")
+      setErrors((prev) => ({ ...prev, service: 'Please select a service first!' }));
     }
   }
 
@@ -87,6 +100,8 @@ const PetOwnerBookingHomeCare = () => {
       ...bookingDetails,
       service: event.target.innerText,
     });
+
+    setErrors((prev) => ({ ...prev, service: '' }));
   }
 
   const handlePetSelection = (event, index) => {
@@ -103,6 +118,8 @@ const PetOwnerBookingHomeCare = () => {
       setPetsIncluded((prevState) => ([
         ...prevState, selectedPet
       ]));
+
+      setErrors((prev) => ({ ...prev, petList: '' }));
     }
   }
 
@@ -115,7 +132,7 @@ const PetOwnerBookingHomeCare = () => {
 
       setTotalPayment(
         finalPaymentBreakdown
-        .map((pet) => {return pet.rate})
+        .map((pet) => { return pet.rate })
         .reduce((total, rate) => total + rate, totalPayment)
       );
 
@@ -128,6 +145,8 @@ const PetOwnerBookingHomeCare = () => {
       alert("Please provide specific instructions!");
       return;
     }
+
+    setIsLoading(true);
 
     const bookingDetailsWithInstructions = {
       ...bookingDetails,
@@ -150,13 +169,14 @@ const PetOwnerBookingHomeCare = () => {
       }
 
       if (response && response.status === 200) {
-        alert(`${bookingDetails.service} Booking successful!`);
         navigate('/');
         window.location.reload();
       }
     } catch (error) {
       console.error(error.message);
       alert(`${bookingDetails.service} Booking failed!`);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -213,6 +233,7 @@ const PetOwnerBookingHomeCare = () => {
                           Please provide us the date for your Check-in.
                         </p>
                         <SelectServiceInput onClick={handleServiceSelection} />
+                        {errors.service && <Typography color="error">{errors.service}</Typography>}
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DateTimePicker
                             label="Check In"
@@ -221,6 +242,7 @@ const PetOwnerBookingHomeCare = () => {
                             onChange={handleCheckInInput}
                           />
                         </LocalizationProvider>
+                        {errors.checkIn && <Typography color="error">{errors.checkIn}</Typography>}
                         <Stack spacing={2} className="mb-2">
                           {bookingDetails.checkOut && (
                             <Alert severity="warning">
@@ -250,8 +272,9 @@ const PetOwnerBookingHomeCare = () => {
                           />
                         )}
                       />
+                      {errors.petList && <Typography color="error">{errors.petList}</Typography>}
                       <TextField
-                        autocomplete="off"
+                        autoComplete="off"
                         autoFocus
                         name="specificInstructions"
                         id="specificInstructions"
@@ -285,6 +308,7 @@ const PetOwnerBookingHomeCare = () => {
                       price={serviceDetails.price}
                       duration={serviceDetails.duration}
                       onClick={handlePaymentBreakdown}
+                      disabled={!bookingDetails.service || !bookingDetails.checkIn || !bookingDetails.petList.length}
                     />
                   </div>
                 </div>
@@ -292,7 +316,7 @@ const PetOwnerBookingHomeCare = () => {
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thank you for availing our  {bookingDetails.service} service!</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thank you for availing our {bookingDetails.service} service!</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
@@ -329,7 +353,9 @@ const PetOwnerBookingHomeCare = () => {
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn button-color text-white" onClick={handleBookingAppointmentConfirmation}>Confirm Booking</button>
+                        <button type="button" class="btn button-color text-white" onClick={handleBookingAppointmentConfirmation} disabled={isLoading}>
+                          {isLoading ? <Spinner /> : 'Confirm Booking'}
+                        </button>
                       </div>
                     </div>
                   </div>

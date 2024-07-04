@@ -1,6 +1,4 @@
-
 export default function ServicecCard(props) {
-
   return (
     <>
       <div class="col-md-12">
@@ -33,7 +31,7 @@ export default function ServicecCard(props) {
             </h5>
           </div>
           <div class="card-footer d-flex justify-content-center">
-            <button type="button" class="btn text-white button-color" data-bs-toggle="modal" onClick={props.onClick} data-bs-target="#exampleModal">
+            <button type="button" class="btn text-white button-color" data-bs-toggle="modal" onClick={props.onClick} data-bs-target="#exampleModal" disabled={props.disabled}>
               Book Now
             </button>
           </div>
