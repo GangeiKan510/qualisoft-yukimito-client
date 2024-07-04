@@ -92,7 +92,7 @@ export default function EditItemForm(props) {
         </DialogTitle>
         <DialogContent style={{ maxWidth: '500px' }}>
           {dialogueNames.map((result) => (
-            <div key={result.title}>
+            <div key={result.title} className='mt-2'>
               {errors[result.title] && <Typography color="error">{errors[result.title]}</Typography>}
               <TextField
                 value={formData[result.title]}

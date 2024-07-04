@@ -753,7 +753,7 @@ export default function PetOwnerDashboard() {
                     <div className="overflow-auto card shadow">
                       <div
                         className="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light"
-                        style={{ maxWidth: "800px", maxHeight: "500px" }}
+                        style={{ maxWidth: "800px", maxHeight: "1000px" }}
                       >
                         {pets.length ? (
                           pets.map((pet, index) => {
