@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -14,6 +14,7 @@ import { Typography } from '@mui/material';
 import BasicDatePicker from './BasicDatePicker';
 import AddIcon from '@mui/icons-material/Add';
 import CheckMark from '../../pages/partials/CheckMark';
+import Spinner from '../Spinner';
 
 const dialogueNames = [
   {
@@ -27,10 +28,17 @@ const dialogueNames = [
 ];
 
 export default function EditItemForm(props) {
-  
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleAdd = async () => {
+    setIsLoading(true);
+    await props.handleAdd();
+    setIsLoading(false);
+  };
+
   return (
     <Fragment>
-      <button onClick={props.handleClickOpen} type="button" class="btn btn-primary yuki-color button-border-color" data-toggle="modal">
+      <button onClick={props.handleClickOpen} type="button" className="btn btn-primary yuki-color button-border-color" data-toggle="modal">
         <AddIcon className='me-1'/>
         Add pet
       </button>
@@ -43,19 +51,20 @@ export default function EditItemForm(props) {
           <DialogContent style={{ maxWidth: '500px' }}>
             {dialogueNames.map((result) => {
               return (
-                  <TextField
-                    value={props.value}
-                    required
-                    autocomplete="off"
-                    autoFocus
-                    name={result.title}
-                    id="name outline-basic"
-                    label={result.label}
-                    type="text"
-                    variant="outlined"
-                    onChange={props.handleChange}
-                    style={{ width: '100%', marginTop: '1rem', marginBottom: '1rem'}}
-                  />
+                <TextField
+                  key={result.title}
+                  value={props.value}
+                  required
+                  autoComplete="off"
+                  autoFocus
+                  name={result.title}
+                  id="name outline-basic"
+                  label={result.label}
+                  type="text"
+                  variant="outlined"
+                  onChange={props.handleChange}
+                  style={{ width: '100%', marginTop: '1rem', marginBottom: '1rem'}}
+                />
               )
             })}
             <BasicDatePicker onDateChange={props.handleDateChange} />
@@ -79,7 +88,9 @@ export default function EditItemForm(props) {
           </DialogContent>
         <DialogActions>
           <Button className='button-link' onClick={props.handleCancel}>Cancel</Button>
-          <Button className='button-link' onClick={props.handleAdd}>Add</Button>
+          <Button className='button-link' onClick={handleAdd} disabled={isLoading}>
+            {isLoading ? <Spinner /> : 'Add'}
+          </Button>
         </DialogActions>
       </Dialog>
     </Fragment>
